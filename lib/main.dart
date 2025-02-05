@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:fl_chart/fl_chart.dart';
 
 void main() {
   runApp(const MyApp());
@@ -99,6 +100,79 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Widget _buildBarChart() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: SizedBox(
+        height: 200, // Set a fixed height for the bar chart
+        child: BarChart(
+          BarChartData(
+            alignment: BarChartAlignment.spaceAround,
+            barGroups: _data.map((sensor) {
+              return BarChartGroupData(
+                x: _data.indexOf(sensor),
+                barRods: [
+                  BarChartRodData(
+                    toY: sensor['uptime'].toDouble(),
+                    color: Colors.lightGreen,
+                    width: 16,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ],
+              );
+            }).toList(),
+            titlesData: FlTitlesData(
+              leftTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  reservedSize: 40,
+                  getTitlesWidget: (double value, TitleMeta meta) {
+                    return Text('${value.toInt()}%');
+                  },
+                ),
+              ),
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  getTitlesWidget: (double value, TitleMeta meta) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        _data[value.toInt()]['name'],
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              topTitles: AxisTitles(
+                sideTitles: SideTitles(showTitles: false),
+              ),
+              rightTitles: AxisTitles(
+                sideTitles: SideTitles(showTitles: false),
+              ),
+            ),
+            borderData: FlBorderData(
+              show: true,
+              border: Border.all(color: Colors.grey, width: 1),
+            ),
+            gridData: FlGridData(
+              show: true,
+              drawVerticalLine: false,
+              getDrawingHorizontalLine: (value) {
+                return FlLine(
+                  color: Colors.grey.withValues(alpha: 50),
+                  dashArray: [5, 5],
+                  strokeWidth: 1,
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,6 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                     ),
                   ),
+                  _buildBarChart(), // Add the bar chart here
                 ],
               ),
       ),
