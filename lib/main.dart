@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/services.dart' show rootBundle;
 
 void main() {
@@ -65,6 +66,18 @@ class _MyHomePageState extends State<MyHomePage> {
     _loadData();
   }
 
+  void _refreshSensorStatuses() {
+    final random = Random();
+    final int sensorsToUpdate = random.nextInt(3) + 1; // 1 to 3 sensors
+    for (int i = 0; i < sensorsToUpdate; i++) {
+      final int sensorIndex = random.nextInt(_data.length);
+      setState(() {
+        _data[sensorIndex]['status'] =
+            _data[sensorIndex]['status'] == 'online' ? 'offline' : 'online';
+      });
+    }
+  }
+
   Future<void> _loadData() async {
     final String response =
         await rootBundle.loadString('assets/mock_data.json');
@@ -121,6 +134,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _refreshSensorStatuses,
+        tooltip: 'Refresh',
+        child: const Icon(Icons.refresh),
       ),
     );
   }
