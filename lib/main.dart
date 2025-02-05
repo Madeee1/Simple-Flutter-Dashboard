@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreen),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'HomePal'),
@@ -57,7 +57,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   List<dynamic> _data = [];
 
   @override
@@ -75,6 +74,18 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Widget _buildSummary() {
+    int onlineCount =
+        _data.where((sensor) => sensor['status'] == 'online').length;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        '$onlineCount/${_data.length} sensors online',
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,15 +96,30 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: _data.isEmpty
             ? const CircularProgressIndicator()
-            : ListView.builder(
-                itemCount: _data.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(_data[index]['name']),
-                    subtitle: Text(
-                        'Status: ${_data[index]['status']}, Uptime: ${_data[index]['uptime']}%'),
-                  );
-                },
+            : Column(
+                children: [
+                  _buildSummary(),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _data.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: Icon(
+                            _data[index]['status'] == 'online'
+                                ? Icons.check_circle
+                                : Icons.cancel,
+                            color: _data[index]['status'] == 'online'
+                                ? Colors.green
+                                : Colors.grey,
+                          ),
+                          title: Text(_data[index]['name']),
+                          subtitle: Text(
+                              'Status: ${_data[index]['status']}, Uptime: ${_data[index]['uptime']}%'),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
       ),
     );
