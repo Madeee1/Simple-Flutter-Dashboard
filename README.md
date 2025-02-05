@@ -24,6 +24,8 @@ flutter pub get
 
 ### Step 3: Running the App
 
+Ensure Chrome is downloaded on the device for easy web testing.
+
 ```sh
 flutter run
 ```
