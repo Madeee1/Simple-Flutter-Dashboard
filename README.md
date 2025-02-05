@@ -1,16 +1,46 @@
-# simple_dashboard
+# Simple Dashboard
 
-A new Flutter project.
+A Flutter project for HomePal Assessment that displays sensor data and visualizes sensor uptime.
 
-## Getting Started
+## Requirements
 
-This project is a starting point for a Flutter application.
+- **Flutter SDK**: Ensure you have Flutter SDK installed. This project requires Flutter version `3.27.3` or higher.
+- **Dart SDK**: Included with Flutter SDK.
 
-A few resources to get you started if this is your first Flutter project:
+## Setup Instructions
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Step 1: Clone the Repository
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```sh
+git clone https://github.com/Madeee1/Simple-Flutter-Dashboard.git
+cd Simple-Flutter-Dashboard
+```
+
+### Step 2: Install Dependencies
+
+```sh
+flutter pub get
+```
+
+### Step 3: Running the App
+
+```sh
+flutter run
+```
+
+### Step 4: Additional Setup
+
+Ensure you have the `mock_data.json` file in the `assets` directory.
+If you encounter any issues, ensure your Flutter and Dart SDKs are up to date.
+
+## Dependencies
+
+- **flutter**: The core Flutter framework.
+- **fl_chart**: A charting library for Flutter used to visualize sensor uptime.
+
+## Assumptions and Design Decisions
+
+- **State Management**: Simple state management using `setState` for handling sensor status updates.
+- **Data Source**: Sensor data is loaded from a local JSON file (`assets/mock_data.json`).
+- **UI Design**: The app displays a list of sensors with their status and uptime, and a bar chart visualizing the uptime of each sensor.
+- **Refresh Functionality**: A "Refresh" button is provided to simulate updating sensor statuses by randomly changing the status of 1-3 sensors.
